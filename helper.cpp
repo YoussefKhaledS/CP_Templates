@@ -33,6 +33,15 @@ vector<int> num_of_divisors(int n){
     return divs;
 }
 
+void coordinate_compression(){
+    vector<int> all ;// vector that have every thing 
+
+    sort(all.begin() , all.end()) ;
+    all.erase(unique(all.begin() , all.end()), all.end()) ;// to remove dublicates
+    auto m = [&](int x){
+        return lower_bound(all.begin() , all.end(), x) - all.begin() +1 ;
+    };
+}
 int main() {
     vector<int> divs = num_of_divisors(1e6) ;
 
