@@ -4,6 +4,7 @@
 #include <functional> // For std::greater
 #include <bits/stdc++.h>
 using namespace std; 
+long long mod = 1e9+7 ;
 
 vector<int> int_to_binary(int x, int n = 30){
     vector<int> bits(n);
@@ -41,6 +42,14 @@ void coordinate_compression(){
     auto m = [&](int x){
         return lower_bound(all.begin() , all.end(), x) - all.begin() +1 ;
     };
+}
+
+// operations under modulo
+int addm(int &a, int &b) {
+    return (a%mod + b%mod)%mod;
+}
+int multm(int &a, int &b) {
+    return (a%mod * b%mod)%mod;
 }
 int main() {
     vector<int> divs = num_of_divisors(1e6) ;
