@@ -7,15 +7,15 @@ using namespace std;
 #define infi 1e6
 
 struct Node {
-    long long ans;
+    long long min;
     long long lazy;
     bool is_lazy;
 
-    Node() : ans(1e18), lazy(0), is_lazy(0){}
-    Node(int x) : ans(x), lazy(0), is_lazy(0){}
+    Node() : min(1e18), lazy(0), is_lazy(0){}
+    Node(int x) : min(x), lazy(0), is_lazy(0){}
 
     void update(int val, int lx, int rx) {
-        ans += val;
+        min += val;
         lazy += val;
         is_lazy = 1;
     }
@@ -34,7 +34,7 @@ struct SegTree {
 
     Node merge(const Node & lf, const Node & ri) {
         Node ans = Node();
-        ans.ans = min(lf.ans, ri.ans);
+        ans.min = min(lf.min, ri.min);
         return ans;
     }
 
@@ -105,7 +105,7 @@ struct SegTree {
 
     // r is not inclusive [l, r)
     long long get_range(int l, int r) {
-        return get_range(l, r, 0, 0, tree_size).ans;
+        return get_range(l, r, 0, 0, tree_size).min;
     }
 };
 

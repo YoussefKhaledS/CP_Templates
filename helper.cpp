@@ -40,7 +40,7 @@ void coordinate_compression(){
     sort(all.begin() , all.end()) ;
     all.erase(unique(all.begin() , all.end()), all.end()) ;// to remove dublicates
     auto m = [&](int x){
-        return lower_bound(all.begin() , all.end(), x) - all.begin() +1 ;
+        return lower_bound(all.begin() , all.end(), x) - all.begin()  ;
     };
 }
 
@@ -51,9 +51,27 @@ int addm(int &a, int &b) {
 int multm(int &a, int &b) {
     return (a%mod * b%mod)%mod;
 }
-int main() {
-    vector<int> divs = num_of_divisors(1e6) ;
 
-    cout << divs[6] ;
+vector<int> stringtovector(string &s) {// lowercase english letters
+    vector<int> res ;
+
+    for (char c : s)
+        res.push_back(c - 'a');
+
+    return res ;
+}
+string vectortostring(vector<int> ar) {// lower case english letters
+    string s ;
+    for (int x : ar) {
+        s.push_back(x + 'a') ;
+    }
+    return s;
+}
+int main() {
+
+    cout << 'z' - 'a' ;
+
+
+
     
 }
