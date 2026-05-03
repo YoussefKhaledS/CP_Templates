@@ -13,24 +13,25 @@ int N = 5e5 , loog = 30;
 using namespace std;
 #define int long long
 
-int pref(int n) {
-    return n*(n+1)/2 ;
-}
+/*
+ * add arithmetic progression on range and get range
+ *
+ * a+ a+d + a+2d + a+3d etc.....
+ */
 
 struct Node {
-    long long sum;
-    long long lazy, lazycnt;
-    bool is_lazy;
+    long long sum = 0;
+    long long a = 0, d = 0;
+    bool is_lazy = 0;
 
-    Node() : sum(0), lazy(0), lazycnt(0), is_lazy(0){}
-    Node(int x) : sum(x), lazy(0), lazycnt(0), is_lazy(0){}
+    Node() {}
+    Node(int x) : sum(x){}
 
-    void update(int start, int cnt, int lx, int rx) {
-        int n = (rx-lx) ;
-        int x = (start * n) + (cnt * (n-1) * n)/2.0 ;
-        sum+= x;
-        lazy += start;
-        lazycnt+=cnt;
+    void update(int new_a, int new_d, int lx, int rx) {
+        int L = rx - lx;
+        sum += new_a * L + new_d * L * (L - 1) / 2;
+        a += new_a;
+        d += new_d;
         is_lazy = 1;
     }
 };
@@ -38,17 +39,15 @@ struct Node {
 struct SegTree {
     int tree_size;
     vector<Node> SegData;
-    SegTree(const vector<int> &arr) {
+    SegTree(int n) {
         tree_size = 1;
-        int n  = arr.size() ;
         while (tree_size < n) tree_size <<= 1;
         SegData.assign(2 * tree_size, Node());
-        build(arr) ;
     }
 
     Node merge(const Node & lf, const Node & ri) {
         Node ans = Node();
-        ans.sum = (lf.sum + ri.sum);
+        ans.sum = lf.sum + ri.sum;
         return ans;
     }
 
@@ -70,41 +69,37 @@ struct SegTree {
     }
 
     void propagate(int node, int lx, int rx) {
-        if(rx - lx == 1)
+        if(rx - lx == 1 || SegData[node].is_lazy == 0)
             return;
 
         int mid = (lx + rx) / 2;
 
-        if (SegData[node].is_lazy) {
-            int start = SegData[node].lazy ;
-            int cnt = SegData[node].lazycnt;
-            SegData[2 * node + 1].update(start,cnt, lx, mid);
-            SegData[2 * node + 2].update(start + (mid - lx)*cnt, cnt , mid, rx);
+        SegData[2 * node + 1].update(SegData[node].a, SegData[node].d, lx, mid);
+        SegData[2 * node + 2].update(
+                SegData[node].a + SegData[node].d * (rx - lx) / 2,
+                SegData[node].d, mid, rx);
 
-            SegData[node].lazy = 0;
-            SegData[node].lazycnt = 0;
-            SegData[node].is_lazy = 0;
-        }
+        SegData[node].a = SegData[node].d = 0;
+        SegData[node].is_lazy = 0;
     }
 
-    void set(int l, int r, int val, int cnt, int node, int lx, int rx) {
+    void set(int l, int r, int a, int d, int node, int lx, int rx) {
         propagate(node, lx, rx);
         if(lx >= r || rx <= l)
             return;
         if(lx >= l && rx <= r) {
-            SegData[node].update(val, cnt, lx, rx);
+            SegData[node].update(a + (lx - l) * d, d, lx, rx);
             return;
         }
 
         int mid = (lx + rx) / 2;
-        int taken = max(0LL, min(mid, r) - max(l, lx));
-        set(l, r, val, cnt, 2 * node + 1, lx, mid);
-        set(l, r, val + taken* cnt , cnt, 2 * node + 2, mid, rx);
+        set(l, r, a, d, 2 * node + 1, lx, mid);
+        set(l, r, a, d, 2 * node + 2, mid, rx);
         SegData[node] = merge(SegData[2 * node + 1], SegData[2 * node + 2]);
     }
     // 0 indexed
-    void set(int l, int r, int val, int cnt) {
-        set(l, r, val, cnt, 0, 0, tree_size);
+    void set(int l, int r, int a, int d) {
+        set(l, r, a, d, 0, 0, tree_size);
     }
 
     Node get_range(int l, int r, int node, int lx, int rx) {
@@ -126,45 +121,3 @@ struct SegTree {
         return get_range(l, r, 0, 0, tree_size).sum;
     }
 };
-
-
-
-void solve()
-{
-    int n , q  ; cin >> n >> q  ;
-    vector<int> ar(n) ;
-    for (int i = 0 ; i< n ;i++)cin >> ar[i] ;
-
-    SegTree segtree(ar);
-
-
-    while (q--) {
-        int op ;cin >> op ;
-
-        if (op == 1) {
-            int l, r ;cin >> l >> r ;
-            segtree.set(l-1 ,r, 1, 1) ;
-        }else {
-            int l , r;cin >> l >> r  ;
-
-            cout << segtree.get_range(l-1 , r) << el  ;
-        }
-    }
-
-}
-
-signed main()
-{
-#ifndef ONLINE_JUDGE
-    freopen("ts", "r", stdin);
-#endif
-    youssef;
-    int ts = 1;
-
-    // cin >> ts;
-    for (int i = 1; i <= ts; i++)
-    {
-        solve();
-        // cout << el;
-    }
-}
