@@ -51,4 +51,54 @@ struct BFS {
             }
         }
     }
+
 };
+vector<int> multisourceBFS(vector<vector<int>> &adj, vector<int> &src) {
+    int n = adj.size() ;
+
+    vector<int> dist(n, -1);
+
+    queue<int> q ;
+
+    for (int s : src)q.push(s), dist[s] = 0 ;
+
+    while (!q.empty()) {
+        int u = q.front() ;
+        q.pop();
+
+        for (int v: adj[u]) {
+            if (dist[v] == -1) {
+                dist[v] = dist[u]+1;
+                q.push(v);
+            }
+        }
+    }
+    return dist ;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
