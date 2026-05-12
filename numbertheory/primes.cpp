@@ -11,15 +11,7 @@
 const ll mod = 998244353 , infi = LONG_MAX;
 int N = 5e5 , loog = 30;
 using namespace std;
-
-bool isprime(int n) {//o(sqrt(n))
-    if (n< 2)return false ;
-
-    for (int x = 2 ; x*x <= n ;x++)
-        if (n% x == 0 )return false ;
-
-    return true;
-}
+#define  int long long
 
 vector<bool> sieve(int n) {// O(nloglog(n))
     vector<bool> isprime(n+1, 1);
@@ -34,6 +26,30 @@ vector<bool> sieve(int n) {// O(nloglog(n))
     }
 
     return isprime ;
+}
+
+vector<int> spf(N) ;
+void buildSPF(int n) {
+    for (int i = 1; i<= n ; i++)spf[i] = i ;
+
+    for (int i =2 ; i*i <= n ;i++) {
+        if (spf[i] == i) {
+            for (int j = i*i ; j <= n ; j+=i) {
+                if (spf[j] == j)
+                    spf[j] = i;
+            }
+        }
+    }
+}
+
+vector<int> factorize(int x) {// get prime factors in log(n)
+    vector<int> fac;
+
+    while (x> 1) {
+        fac.push_back(spf[x]) ;
+        x/=spf[x];
+    }
+    return fac;
 }
 
 // can be used to konow if perfect square(exps even) or cube(exps % 3 == 0)
@@ -74,6 +90,42 @@ vector<int> sum_of_divisors(int n){
 
 
 
-int main() {
+signed main() {
+    ll x = 1 ;
+    for (int i = 234 ; i>= 229 ; i--) {
+        x*=i ;
+        vector<int> factors = getfactors(i) ;
 
+
+        for (auto j: factors)cout << j<< ' ' ;cout << el;
+    }
+    cout << x <<el;
+    vector<int> factors = getfactors(6) ;
+    // 18,838,314,540,045
+
+    for (auto j: factors)cout << j<< ' ' ;cout << el;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

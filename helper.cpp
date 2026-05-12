@@ -67,6 +67,17 @@ string vectortostring(vector<int> ar) {// lower case english letters
     }
     return s;
 }
+
+int left_most_digit(int &n) {// returns the left most and use reference to remove it from n
+    int tmp = n ;
+    int p =1 ;
+    while (tmp >= 10) {
+        tmp/=10;p*=10;
+    }
+    n%=p;
+    return tmp ;
+}
+
 int main() {
 
     cout << 'z' - 'a' ;
