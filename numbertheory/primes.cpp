@@ -9,7 +9,7 @@
 #define no "NO"
 #define ll long long
 const ll mod = 998244353 , infi = LONG_MAX;
-int N = 5e5 , loog = 30;
+int N = 5e7 , loog = 30;
 using namespace std;
 #define  int long long
 
@@ -67,7 +67,7 @@ vector<int> getfactors(int n ) {//O(sqrt(n))
 
     return ar ;
 }
-vector<int> num_of_divisors(int n){
+vector<int> num_of_divisors(int n){//nlogn
     vector<int> divs(n,0) ;
 
     for(int i =1 ; i< n ;i++){
@@ -77,7 +77,7 @@ vector<int> num_of_divisors(int n){
     }
     return divs;
 }
-vector<int> sum_of_divisors(int n){
+vector<int> sum_of_divisors(int n){// nlogn
     vector<int> divs(n,0) ;
 
     for(int i =1 ; i< n ;i++){
@@ -89,21 +89,15 @@ vector<int> sum_of_divisors(int n){
 }
 
 
-
 signed main() {
-    ll x = 1 ;
-    for (int i = 234 ; i>= 229 ; i--) {
-        x*=i ;
-        vector<int> factors = getfactors(i) ;
+    int n = 1336336 ;
+    buildSPF(10000000) ;
+
+    vector<int> a = factorize(n) ;
+
+    for (auto i: a)cout << i<< ' ';
 
 
-        for (auto j: factors)cout << j<< ' ' ;cout << el;
-    }
-    cout << x <<el;
-    vector<int> factors = getfactors(6) ;
-    // 18,838,314,540,045
-
-    for (auto j: factors)cout << j<< ' ' ;cout << el;
 }
 
 

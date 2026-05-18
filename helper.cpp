@@ -78,9 +78,20 @@ int left_most_digit(int &n) {// returns the left most and use reference to remov
     return tmp ;
 }
 
+int fastpow(int a,int b) {
+    int res =1 ;
+    while (b) {
+        if (b&1)res*=a;
+
+        a*=a;
+        b>>=1;
+    }
+    return res;
+}
+
 int main() {
 
-    cout << 'z' - 'a' ;
+    cout << (int)sqrt(1e5) ;
 
 
 
