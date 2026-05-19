@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#pragma GCC target("popcnt") // needed for faster execution of these opration
 using namespace std;
 
 // ================= BUILTIN BIT FUNCTIONS =================
@@ -247,3 +248,20 @@ cout << bs4 << endl;
 // bitset<5>("10101") << 5
 // result -> 00000
 //
+
+/*
+*C++ supports some of those operations since C++20 via the bit standard library:
+
+has_single_bit: checks if the number is a power of two
+bit_ceil / bit_floor: round up/down to the next power of two
+rotl / rotr: rotate the bits in the number
+countl_zero / countr_zero / countl_one / countr_one: count the leading/trailing zeros/ones
+popcount: count the number of set bits
+Additionally, there are also predefined functions in some compilers that help working with bits. E.g. GCC defines a list at Built-in Functions Provided by GCC that also work in older versions of C++:
+
+__builtin_popcount(unsigned int) returns the number of set bits (__builtin_popcount(0b0001'0010'1100) == 4)
+__builtin_ffs(int) finds the index of the first (most right) set bit (__builtin_ffs(0b0001'0010'1100) == 3)
+__builtin_clz(unsigned int) the count of leading zeros (__builtin_clz(0b0001'0010'1100) == 23)
+__builtin_ctz(unsigned int) the count of trailing zeros (__builtin_ctz(0b0001'0010'1100) == 2)
+__builtin_parity(x) the parity (even or odd) of the number of ones in the bit representation
+ */

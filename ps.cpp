@@ -9,157 +9,43 @@
 #define no "NO"
 #define ll long long
 const ll mod = 998244353 , infi = LONG_MAX;
-int N = 5e5 , loog = 30;
+int N = 5000002 , loog = 30;
 using namespace std;
 #define int long long
 
-int pref(int n) {
-    return n*(n+1)/2 ;
-}
-
-struct Node {
-    long long sum;
-    long long lazy, lazycnt;
-    bool is_lazy;
-
-    Node() : sum(0), lazy(0), lazycnt(0), is_lazy(0){}
-    Node(int x) : sum(x), lazy(0), lazycnt(0), is_lazy(0){}
-
-    void update(int start, int cnt, int lx, int rx) {
-        int n = (rx-lx) ;
-        int x = (start * n) + (cnt * (n-1) * n)/2.0 ;
-        sum+= x;
-        lazy += start;
-        lazycnt+=cnt;
-        is_lazy = 1;
-    }
-};
-
-struct SegTree {
-    int tree_size;
-    vector<Node> SegData;
-    SegTree(const vector<int> &arr) {
-        tree_size = 1;
-        int n  = arr.size() ;
-        while (tree_size < n) tree_size <<= 1;
-        SegData.assign(2 * tree_size, Node());
-        build(arr) ;
-    }
-
-    Node merge(const Node & lf, const Node & ri) {
-        Node ans = Node();
-        ans.sum = (lf.sum + ri.sum);
-        return ans;
-    }
-
-    void build(const vector<int> & arr, int node, int lx, int rx) {
-        if(rx - lx == 1) {
-            if(lx < arr.size())
-                SegData[node] = Node(arr[lx]);
-            return;
-        }
-
-        int mid = (lx + rx) / 2;
-        build(arr, 2 * node + 1, lx, mid);
-        build(arr, 2 * node + 2, mid, rx);
-
-        SegData[node] = merge(SegData[2 * node + 1], SegData[2 * node + 2]);
-    }
-    void build(const vector<int> & arr) {
-        build(arr, 0, 0, tree_size);
-    }
-
-    void propagate(int node, int lx, int rx) {
-        if(rx - lx == 1)
-            return;
-
-        int mid = (lx + rx) / 2;
-
-        if (SegData[node].is_lazy) {
-            int start = SegData[node].lazy ;
-            int cnt = SegData[node].lazycnt;
-            SegData[2 * node + 1].update(start,cnt, lx, mid);
-            SegData[2 * node + 2].update(start + (mid - lx)*cnt, cnt , mid, rx);
-
-            SegData[node].lazy = 0;
-            SegData[node].lazycnt = 0;
-            SegData[node].is_lazy = 0;
-        }
-    }
-
-    void set(int l, int r, int val, int cnt, int node, int lx, int rx) {
-        propagate(node, lx, rx);
-        if(lx >= r || rx <= l)
-            return;
-        if(lx >= l && rx <= r) {
-            SegData[node].update(val, cnt, lx, rx);
-            return;
-        }
-
-        int mid = (lx + rx) / 2;
-        int taken = max(0LL, min(mid, r) - max(l, lx));
-        set(l, r, val, cnt, 2 * node + 1, lx, mid);
-        set(l, r, val + taken* cnt , cnt, 2 * node + 2, mid, rx);
-        SegData[node] = merge(SegData[2 * node + 1], SegData[2 * node + 2]);
-    }
-    // 0 indexed
-    void set(int l, int r, int val, int cnt) {
-        set(l, r, val, cnt, 0, 0, tree_size);
-    }
-
-    Node get_range(int l, int r, int node, int lx, int rx) {
-        propagate(node, lx, rx);
-        if(lx >= r || rx <= l)
-            return Node();
-        if(lx >= l && rx <= r)
-            return SegData[node];
-
-        int mid = (lx + rx) / 2;
-        Node lf = get_range(l, r, 2 * node + 1, lx, mid);
-        Node ri = get_range(l, r, 2 * node + 2, mid, rx);
-
-        return merge(lf, ri);
-    }
-
-    // r is not inclusive [l, r)
-    long long get_range(int l, int r) {
-        return get_range(l, r, 0, 0, tree_size).sum;
-    }
-};
-
-
-
 void solve()
 {
-    int n , q  ; cin >> n >> q  ;
+    int n, k ;cin >> n >> k ;
+
     vector<int> ar(n) ;
-    for (int i = 0 ; i< n ;i++)cin >> ar[i] ;
+    vector<vector<int>> need(n , vector<int>(64,0)) ;
+    for (int i = 0 ; i < n; i++) {
+        cin >> ar[i] ;
+        bitset<64> x(ar[i]) ;
 
-    SegTree segtree(ar);
+        for (int j = 0 ; j< 64;j++) {
+            int y = ((1<<j+1) -1) ;
 
-
-    while (q--) {
-        int op ;cin >> op ;
-
-        if (op == 1) {
-            int l, r ;cin >> l >> r ;
-            segtree.set(l-1 ,r, 1, 1) ;
-        }else {
-            int l , r;cin >> l >> r  ;
-
-            cout << segtree.get_range(l-1 , r) << el  ;
-        }
+            int tmp = ar[i] & ((1<<j+1) - 1) ;
+            need[i][j] = y - tmp ;
+            cout << need[i][j] << ' ' ;
+        }cout << el;
     }
+
 
 }
 
 signed main()
 {
+
+    youssef;
 #ifndef ONLINE_JUDGE
     freopen("ts", "r", stdin);
 #endif
-    youssef;
+
     int ts = 1;
+
+    // preprocess();
 
     // cin >> ts;
     for (int i = 1; i <= ts; i++)
