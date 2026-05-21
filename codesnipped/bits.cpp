@@ -265,3 +265,11 @@ __builtin_clz(unsigned int) the count of leading zeros (__builtin_clz(0b0001'001
 __builtin_ctz(unsigned int) the count of trailing zeros (__builtin_ctz(0b0001'0010'1100) == 2)
 __builtin_parity(x) the parity (even or odd) of the number of ones in the bit representation
  */
+
+
+// find last left most set bit
+int last(int x) {
+    // base 64
+    return 63 - __builtin_clzll(x) ;
+    return 31 - __builtin_clz(x) ;
+}
