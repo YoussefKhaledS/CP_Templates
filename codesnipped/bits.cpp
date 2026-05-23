@@ -270,6 +270,7 @@ __builtin_parity(x) the parity (even or odd) of the number of ones in the bit re
 // find last left most set bit
 int last(int x) {
     // base 64
+    if (x <= 0)return -1 ;
     return 63 - __builtin_clzll(x) ;
     return 31 - __builtin_clz(x) ;
 }
