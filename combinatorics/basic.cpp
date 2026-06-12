@@ -17,11 +17,13 @@ int fastpow(int a,int b) {
     int res =1 ;
     while (b) {
         if (b&1)res*=a;
+        res%= mod;
 
         a*=a;
+        a%=mod;
         b>>=1;
     }
-    return res;
+    return res % mod;
 }
 
 int modinverse(int x) {
@@ -36,7 +38,7 @@ void buildfactorial(int n) {
     }
 }
 
-int permutations(int n, int k) {// number of permuts using only k ele from n ele
+int permutations(int n, int k) {// nCr number of permuts using only k ele from n ele
     // n!/(n-k)!
     if (k>n)return 0 ;
     return fact[n] * modinverse(fact[n-k]) %mod ;

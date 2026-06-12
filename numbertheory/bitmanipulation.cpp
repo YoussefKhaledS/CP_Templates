@@ -14,7 +14,13 @@ using namespace std;
 #define int long long
 
 
-
+// find last left most set bit
+int last(int x) {
+    // base 64
+    if (x <= 0)return -1 ;
+    return 63 - __builtin_clzll(x) ;
+    return 31 - __builtin_clz(x) ;
+}
 
 int count1(int x , int b) { // return number of 1s from 0 to x for a bit index
     int len = 1<<(b+1) ;
