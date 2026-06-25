@@ -32,3 +32,27 @@ using namespace std;
  *
  * ---------
  */
+
+int dfs(int mask, int &n, vector<unordered_set<int>> &adj) {
+    if (mask == (1<<(n+1))-1)return 0 ;
+
+    int &ret = dp[mask] ;
+    if (ret != -1)return ret ;
+    ret = infi ;
+
+    int full = (1<<(n+1))-1 ;
+    int rem = full ^ mask;
+
+    for (int sub = rem ; sub ; sub = (sub -1 ) & rem) {
+        if (check(sub, adj, n)) {
+            ret = min(ret , 1+dfs(mask | sub , n , adj )) ;
+        }
+    }
+    // for (int i = 2 ; i < (1<<(n+1)) ; i++) {
+    //     if ((mask & i) == 0 && check(i, adj, n)) {
+    //         ret = min(1+dfs(mask | i, n , adj), ret )  ;
+    //     }
+    // }
+
+    return ret ;
+}
