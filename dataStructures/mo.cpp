@@ -13,7 +13,7 @@ int N = 5000002 , loog = 40;
 using namespace std;
 #define int long long
 
-// todo STUDY  mo on trees (subtree, paths)
+// todo study mo on tree (subtree, paths)
 
 struct Query {
     int l , r , idx;
@@ -22,7 +22,6 @@ struct Query {
 struct Mo {
     int n, sq, ans;
     vector<int> ar ;
-
     Mo(vector<int> &v, int q) {
         ar = v ;
         n = v.size() ;
@@ -64,3 +63,6 @@ struct Mo {
 
     }
 };
+
+
+
