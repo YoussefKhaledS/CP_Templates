@@ -67,7 +67,8 @@ __builtin_ffs(x);
 
 // Long long versions
 __builtin_clzll(x);
-__builtin_ctzll(x);
+__builtin_ctzll(x); // Position of the least significant set bit (0-based)
+// or  you can do  x&(-x) 
 
 // NOTE:
 // clz(0) and ctz(0) => undefined
