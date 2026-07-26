@@ -58,3 +58,53 @@ struct MonoQueue {
         return res ;
     }
 };
+
+
+
+
+/*
+    MonoQueue (Queue with Aggregates)
+
+    Complexity:
+    - push() : O(1) amortized
+    - pop()  : O(1) amortized
+    - get()  : O(1)
+
+    Supports any associative merge operation.
+    Examples:
+    - min
+    - max
+    - min & max together
+    - gcd
+    - bitwise AND/OR
+    - xor
+    - custom monoids
+
+    Advantages over deque:
+    + Works for ANY associative operation (not only monotonic ones).
+    + Can return multiple aggregates at once (min, max, gcd, ...).
+    + Simple generic implementation.
+    + No need to maintain monotonicity manually.
+
+    Typical uses:
+    - Sliding window minimum/maximum.
+    - Fixed-size window aggregate queries.
+    - DP with sliding windows.
+    - Two pointers when window aggregate is needed.
+    - Binary search on answer + window checking.
+
+    Idea:
+    - Two stacks.
+    - Each stack stores prefix aggregates.
+    - Queue aggregate = merge(left stack aggregate, right stack aggregate).
+
+    Requirement:
+    merge(a, b) must be associative:
+        merge(merge(a,b),c) == merge(a,merge(b,c))
+
+    How to Use: 
+        1) Push new elements into the window: mq.push(a[i]);
+        2) Query the current aggregate: auto cur = mq.get(); cur.mn // minimum cur.mx // maximum
+        3) Remove the oldest element when the window moves: mq.pop();
+        4) Current window size: mq.size();
+*/
