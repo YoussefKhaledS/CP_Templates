@@ -11,7 +11,8 @@ int N = 5000002 , loog = 40;
 using namespace std;
 using namespace __gnu_pbds;
 #define int long long
-
+#define Row vector<int>
+#define Matrix vector<Row>
 /*
  * identitie matrix :
 * Example (3x3):
@@ -30,12 +31,12 @@ using namespace __gnu_pbds;
  * Time: O(n * m * p)
  */
 
-vector<vector<int>> matrixMultiply(vector<vector<int>> &a, vector<vector<int>> &b) {
+Matrix matrixMultiply(Matrix &a, Matrix &b) {
     int n = a.size() ;
     int m = a[0].size() ;
     int p = b[0].size() ;
 
-    vector<vector<int>> ret(n, vector<int>(p,0)) ;
+    Matrix ret(n, vector<int>(p,0)) ;
 
     for (int i = 0 ; i< n; i++) {
         for (int k = 0 ; k< m ;k++) {
@@ -44,10 +45,11 @@ vector<vector<int>> matrixMultiply(vector<vector<int>> &a, vector<vector<int>> &
             }
         }
     }
+    return ret ;
 }
 
-vector<vector<int>> identityMatrix(int n) {
-    vector<vector<int>> I(n, vector<int>(n, 0)) ;
+Matrix identityMatrix(int n) {
+    Matrix I(n, vector<int>(n, 0)) ;
     for (int i = 0 ; i< n; i++) {
         I[i][i] = 1 ;
     }
@@ -61,9 +63,9 @@ vector<vector<int>> identityMatrix(int n) {
  * Time: O(n^3 log p)
  */
 
-vector<vector<int>> matrixPower(vector<vector<int>> matrx , int p) {
+Matrix matrixPower(Matrix matrx , int p) {
     int n = matrx.size() ;
-    vector<vector<int>> res = identityMatrix(n);
+    Matrix res = identityMatrix(n);
 
     while (p) {
         if (p&1)
