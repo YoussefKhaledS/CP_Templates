@@ -16,20 +16,25 @@ typedef tree<pair<int,int>, null_type, less<pair<int,int>>, rb_tree_tag, tree_or
 
 
 int main(){
-    orderedset os;
-    os.insert(3) ;
-    os.insert(36) ;
-    os.insert(32) ;
-    os.insert(31) ;
-    os.insert(30) ;
-    os.insert(99) ;
-    os.insert(35) ;
+    orderedmultiset os;
+    os.insert({36, 0}) ;
+    os.insert({3,1}) ;
+    os.insert({32, 2}) ;
+    os.insert({32, 7}) ;
+    os.insert({31, 3}) ;
+    os.insert({30, 4}) ;
+    os.insert({99, 5}) ;
+    os.insert({35, 6}) ;
 
-    for(auto i: os){
-        cout << i << ' ' ;
+    // for(auto [i, x]: os){
+    //     cout << i << ' ' ;
+    // }
+    auto it = os.lower_bound({32,-1}) ;
+    if (it != os.end()) {
+        cout << (it)->first ;
     }
 
     cout << '\n' ;
-    cout << *os.find_by_order(3)  ;
+    cout << os.order_of_key({2,8})  ;
 
 }
