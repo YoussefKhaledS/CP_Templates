@@ -31,7 +31,7 @@ using namespace __gnu_pbds;
  * Time: O(n * m * p)
  */
 
-Matrix matrixMultiply(Matrix &a, Matrix &b) {
+Matrix matrixMultiply(Matrix &a, Matrix &b) { // O(n^3) but with 1 row o(n^2)
     int n = a.size() ;
     int m = a[0].size() ;
     int p = b[0].size() ;
@@ -76,4 +76,20 @@ Matrix matrixPower(Matrix matrx , int p) {
     }
 
     return res ;
+}
+
+vector<Matrix> pwT(31) ;
+void buildMatrixTPowers() {
+    pwT[0] = T ;
+
+    for (int i = 1; i<= 30;i++) {
+        pwT[i] = matrixMultiply(pwT[i-1], pwT[i-1]) ;
+    }
+
+    int k , n;
+    Matrix cur = identityMatrix(n) ;
+    for (int b = 0 ; b < 31; b++) {
+        if (k & (1ll << b))
+            cur = matrixMultiply(cur ,pwT[b]) ;
+    }
 }

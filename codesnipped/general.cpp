@@ -27,3 +27,11 @@ void func3() {// convert string transform string
     int x = stoll("235234324") ;
 
 }
+// to delete element from vector by its value v.erase(remove(v.begin(), v.end(), value), v.end());
+
+// to sort vector by second element
+/*
+sort(v.begin(), v.end(), [](const auto &a, const auto &b) {
+    return a.second < b.second;
+});
+ */

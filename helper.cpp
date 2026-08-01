@@ -23,12 +23,22 @@ int binary_to_int(vector<int> &bits){
     return x ;
 }
 
-vector<int> num_of_divisors(int n){
+vector<int> num_of_divisors(int n){// n log(n)
     vector<int> divs(n,0) ;
 
     for(int i =1 ; i< n ;i++){
         for(int j = i; j < n ;j+=i){
             divs[j]++;
+        }
+    }
+    return divs;
+}
+vector<vector<int>> divisors(int n){
+    vector<vector<int>> divs(n) ;
+
+    for(int i =1 ; i< n ;i++){
+        for(int j = i; j < n ;j+=i){
+            divs[j].push_back(i);
         }
     }
     return divs;

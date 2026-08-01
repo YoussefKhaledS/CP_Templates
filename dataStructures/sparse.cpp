@@ -29,7 +29,7 @@ struct ST{
     
     }
 
-    int get(int l, int r)
+    int get(int l, int r)// get(l, r) expects an inclusive 0-indexed range
     {
         int len = r - l + 1;
         int level = logs[len];
