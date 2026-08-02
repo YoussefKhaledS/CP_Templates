@@ -11,11 +11,17 @@ struct BIT {
         while(n < _n)n<<=1;
         b.assign(n+1 ,0) ;
     }
+    int merge(int a, int b){
+        return a + b;
+    }
+    int inverse_merge(int a, int b){
+        return a - b;
+    }
 
     int get(int idx){
         int ret = 0 ;
         while(idx){
-            ret+=b[idx] ;
+            ret = merge(ret , b[idx]) ;
             idx -= idx & -idx ; 
         }
         return ret ; 
@@ -23,17 +29,17 @@ struct BIT {
 
     void add(int idx, int v){
         while(idx <= n){
-            b[idx]+=v;
+            b[idx] = merge(b[idx] , v) ;
             idx+= idx&-idx ;
         }
     }
 
     int get(int l, int r){
-        return get(r) - get(l-1) ;
+        return inverse_merge(get(r) , get(l-1)) ;
     }
 
-    int get_value(int idx){
-        return get(idx) - get(idx -1) ;
+    int get_idx(int idx){
+        return inverse_merge(get(idx) , get(idx -1)) ;
     }
 
     void set(int idx, int v){
@@ -45,7 +51,7 @@ struct BIT {
         int idx = 0 ; 
         for(int step = n; step > 0; step >>= 1){
             if(b[idx + step] < sum){ // if you want to make it upper bound chenge condition to <= 
-                sum-=b[idx+step] ;
+                sum = inverse_merge(sum, b[idx+step]) ;
                 idx+=step;
             }
         }

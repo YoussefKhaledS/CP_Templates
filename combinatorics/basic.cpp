@@ -38,10 +38,21 @@ void buildfactorial(int n) {
     }
 }
 
-int permutations(int n, int k) {// nCr number of permuts using only k ele from n ele
+int nPr(int n, int k) {// nPr number of permuts using only k ele from n ele
     // n!/(n-k)!
     if (k>n)return 0 ;
     return fact[n] * modinverse(fact[n-k]) %mod ;
+}
+
+int nCr(int n, int r) {
+    if (r > n || r < 0) return 0;
+    return 1LL * fact[n]
+           * modinverse(fact[r]) % mod
+           * modinverse(fact[n-r]) % mod;
+}
+int nCr(int n, int r) {
+    if (r > n || r < 0) return 0;
+    return 1LL * nPr(n, r) * modinverse(fact[r]) % mod;
 }
 
 
