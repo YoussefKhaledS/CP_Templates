@@ -20,6 +20,44 @@ using namespace __gnu_pbds;
       0 1 0
       0 0 1
 *
+*
+*For min-plus algebra, the identity matrix is
+
+I[i][i] = 0;
+I[i][j] = INF (i != j);
+
+3. Initialization of the transition matrix
+
+You have
+
+Matrix T(n, Row(n,0));
+
+This means
+
+every pair of vertices has an edge of weight 0.
+
+Instead it should be
+
+Matrix T(n, Row(n, INF));
+
+and then fill only the existing edges.
+4. matrixminpath() ignores unreachable states
+
+Currently
+
+ret[i][j] = min(ret[i][j], a[i][k] + b[k][j]);
+
+If either operand is INF, you'll compute
+
+INF + something
+
+which is meaningless and may overflow if INF is larger.
+
+You should skip when
+
+a[i][k] == INF || b[k][j] == INF
+
+*
 * /
 
 
