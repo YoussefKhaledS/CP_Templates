@@ -93,3 +93,66 @@ void buildMatrixTPowers() {
             cur = matrixMultiply(cur ,pwT[b]) ;
     }
 }
+
+
+
+
+
+
+
+// matrix without using vectors
+const int MAX = 55;
+
+struct Matrix {
+    int row, col;
+    int a[MAX][MAX];
+
+    Matrix() {
+        row = col = 0;
+        memset(a, 0, sizeof(a));
+    }
+
+    Matrix(int r, int c) {
+        row = r;
+        col = c;
+        memset(a, 0, sizeof(a));
+    }
+};
+
+Matrix matrixMultiply(const Matrix &A, const Matrix &B) {
+    Matrix ret(A.row, B.col);
+
+    for (int i = 0; i < A.row; i++) {
+        for (int k = 0; k < A.col; k++) {
+            for (int j = 0; j < B.col; j++) {
+                ret.a[i][j] =
+                    (ret.a[i][j] + A.a[i][k] * B.a[k][j]) % mod;
+            }
+        }
+    }
+
+    return ret;
+}
+
+Matrix identityMatrix(int n) {
+    Matrix I(n, n);
+
+    for (int i = 0; i < n; i++)
+        I.a[i][i] = 1;
+
+    return I;
+}
+
+Matrix matrixPower(Matrix A, int p) {
+    Matrix res = identityMatrix(A.row);
+
+    while (p) {
+        if (p & 1)
+            res = matrixMultiply(res, A);
+
+        A = matrixMultiply(A, A);
+        p >>= 1;
+    }
+
+    return res;
+}

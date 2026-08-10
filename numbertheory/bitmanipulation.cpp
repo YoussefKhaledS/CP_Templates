@@ -15,7 +15,7 @@ using namespace std;
 
 
 // find last left most set bit
-int last(int x) {
+int last(int x) { // 0-indexed
     // base 64
     if (x <= 0)return -1 ;
     return 63 - __builtin_clzll(x) ;
