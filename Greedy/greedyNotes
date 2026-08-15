@@ -1,0 +1,56 @@
+6.2 Scheduling
+
+Goal: Select the maximum number of non-overlapping events.
+
+❌ Shortest event first → wrong
+❌ Earliest starting time → wrong
+✅ Earliest ending time → correct
+Sort events by end time.
+Greedily take an event if start >= last_end.
+
+Pattern:
+
+Maximize number of non-overlapping intervals → sort by ending time.
+
+6.3 Tasks & Deadlines
+
+Goal: Maximize total score where each task gives deadline - finish_time.
+
+Deadlines don't affect the optimal ordering.
+✅ Sort tasks by duration ascending.
+Reason: swapping a longer task before a shorter one always improves the total score.
+
+Pattern:
+
+Minimize total completion time → Shortest Job First.
+
+6.4 Minimizing Sums
+
+Given:
+
+Σ |ai - x|^c
+
+c = 1
+Σ |ai - x|
+✅ Optimal x = median
+Sort → choose middle.
+If n is even, any x between the two middle values works.
+
+Remember:
+
+Absolute distance → Median
+
+c = 2
+Σ (ai - x)²
+✅ Optimal x = average / mean
+
+Remember:
+
+Squared distance → Mean
+
+🧠 Super-short cheat sheet
+Problem	Optimal strategy
+Max non-overlapping events	Earliest ending time
+Tasks with deadline - finish	Shortest duration first
+Minimize Σ|ai-x|	Median
+Minimize Σ(ai-x)²	Mean
