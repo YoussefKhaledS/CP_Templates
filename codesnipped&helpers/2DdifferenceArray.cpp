@@ -42,6 +42,34 @@ void after_updates() {
 0  0 -10   0   0  10  0
 0  0   0   0   0   0  0
  */
+
+// Recognition pattern
+// Whenever you see:
+//
+// people entering/leaving
+// trains arriving/departing
+// rooms occupied
+// servers active
+// customers in a store
+// jobs running
+// intervals overlapping
+
+/*
+G. Range update + point query, but ONLINE?
+
+Think:
+
+Difference Array + Fenwick Tree
+H. Range update + range sum, ONLINE?
+
+Think:
+
+Fenwick × 2
+
+or
+
+Lazy Segment Tree
+ */
 signed main() {
     n = 5 ;
     m = 7 ;
