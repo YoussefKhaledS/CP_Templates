@@ -39,6 +39,12 @@ sort(v.begin(), v.end(), [](const auto &a, const auto &b) {
 });
  */
 
+/*
+ * General advices
+ * - when dealing with consiquitive ranges use 1-indexed alwase
+ *
+ */
+
 // vector<array<int,3>> ar;
 // cin into ar[i]:
 //   cin >> ar[i][0] >> ar[i][1] >> ar[i][2];
