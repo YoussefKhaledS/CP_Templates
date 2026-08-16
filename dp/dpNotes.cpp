@@ -30,6 +30,16 @@ using namespace std;
  *
  * you can treate the dp call as o(1) if you did not clear the memo array
  *
+ *
+ *{   dp bit optimization if a problem asking if you can get a sum from array use dp on all sums 1/0 for each sum and use bit optimization
+*    bitset<1000*100+2> dp[2] ;
+    memset(dp , 0 , sizeof dp);
+    dp[n&1][0] = true;
+
+    for (int i = n -1 ; ~i ; i--) {
+        dp[i&1] = dp[(i+1)&1] | (dp[(i+1)&1] << ar[i]) ;
+    }
+*}
  * ---------
  */
 
