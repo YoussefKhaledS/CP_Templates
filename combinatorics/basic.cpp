@@ -44,6 +44,7 @@ int nPr(int n, int k) {// nPr number of permuts using only k ele from n ele
     return fact[n] * modinverse(fact[n-k]) %mod ;
 }
 
+// ncr = (n-1)Cr + (n-1)C(r-1) Pascal's identity    think about take or leave
 int nCr(int n, int r) {
     if (r > n || r < 0) return 0;
     return 1LL * fact[n]
