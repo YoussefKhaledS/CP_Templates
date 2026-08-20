@@ -30,6 +30,10 @@ int modinverse(int x) {
     return fastPow(x, mod-2) ;
 }
 
+int modDivide(int x, int y) {
+    return x * modinverse(y) %mod;
+}
+
 vector<int> fact(N+1) ;
 void buildfactorial(int n) {
     fact[0] =1 ;
