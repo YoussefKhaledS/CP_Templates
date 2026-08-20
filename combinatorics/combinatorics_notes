@@ -1,0 +1,19 @@
+Number of subsequences of size k from an array of size n is nCk.
+
+Abstract: nCk and nPk
+
+nCk (Combinations):
+The number of ways to choose k items from n total items when order does not matter.
+Often read as "n choose k" and written as C(n, k) or nCk.
+
+nPk (Permutations):
+The number of ways to choose and arrange k items from n total items when order does matter.
+Written as P(n, k) or nPk.
+
+
+Important fixed rules to remember
+
+For distributing identical objects:
+Condition                                           Formula
+n children, m identical objects, child can get 0+   C(n + m - 1, m)
+Every child gets at least 1                         C(m - 1, n - 1)
