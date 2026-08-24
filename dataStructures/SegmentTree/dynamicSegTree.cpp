@@ -81,3 +81,63 @@ struct DynamicSagara {
 
     ll query(ll l, ll r) { return query(l, r, root, 0, n); }
 };
+
+
+// another implementation single update range query for multiplication
+struct TreeNode {
+    int sum = 0, lazy = 0, isLazy = 0;
+    TreeNode *left = nullptr, *right = nullptr;
+
+    TreeNode() {}
+    TreeNode(int x): sum(x) {}
+    TreeNode(TreeNode *&a, TreeNode *&b): left(a), right(b) {}
+
+};
+
+using Node = TreeNode*;
+
+struct DynamicSagara {
+    Node root = new TreeNode();
+    const ll n;
+
+    DynamicSagara(ll n): n(n) {}
+
+
+    void add(ll &idx, int &val, Node &node, ll lx, ll rx) {
+        if (!node)
+            node = new TreeNode();
+        if (rx - lx == 1)
+        {
+            node->sum += val;
+            node->sum%=mod;
+            return;
+        }
+
+        int mid = (lx + rx) / 2;
+        if (idx < mid)
+            add(idx, val, node->left , lx, mid);
+
+        else
+            add(idx, val, node->right, mid, rx);
+
+        node->sum =
+        ((node->left ? node->left->sum : 0) *
+         (node->right ? node->right->sum : 0)) % mod;
+    }
+
+    ll query(ll l, ll r, Node &node, ll lx, ll rx) {
+        if (lx >= r || rx <= l ) return 1;
+        if (!node)return 0 ;
+        if (lx >= l && rx <= r) return node->sum;
+
+        ll m = (lx + rx) / 2;
+        ll ans = query(l, r, node->left, lx, m);
+        ans *= query(l, r, node->right, m, rx);
+        ans%=mod;
+        return ans;
+    }
+
+    void add(ll idx, int val) { add(idx, val, root, 0, n); }
+
+    ll query(ll l, ll r) { return query(l, r, root, 0, n); }
+};
