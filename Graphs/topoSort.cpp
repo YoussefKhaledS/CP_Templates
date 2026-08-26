@@ -20,7 +20,7 @@ using namespace std;
  * Remove them one by one, decreasing the indegree of their neighbors.
  * If all n nodes are processed, the graph is a DAG and 'topo' is a valid topological order.
  */
-vector<int> topoSort(vector<vector<int>> &adj) {
+vector<int> topoSort(vector<vector<int>> &adj) { // kahn's algo
     int n = adj.size() -1 ;
     vector<int> indeg(n+1), topo ;
     queue<int> q;
@@ -32,9 +32,10 @@ vector<int> topoSort(vector<vector<int>> &adj) {
     for (int i = 1 ; i<=n ;i++)
         if (indeg[i]==0)
             q.push(i) ;
-
+    int cnt  =0 ;
     while (!q.empty()) {
         int u = q.front() ; q.pop() ;
+        cnt++;
         topo.push_back(u);
 
         for (int v : adj[u])
@@ -42,5 +43,29 @@ vector<int> topoSort(vector<vector<int>> &adj) {
                 q.push(v);
 
     }
+    if (cnt != n);// this has a cycle
+
     return topo;
+}
+
+vector<int> dfs(int node, vector<vector<int>> &adj, vector<bool> &vis, vector<int> &ans) {
+    vis[node] = 1;
+    for (int child: adj[node]) {
+        if (!vis[child])
+            dfs(child, adj, vis , ans) ;
+    }
+
+    ans.push_back(node);
+}
+
+vector<int> topoSort(vector<vector<int>> &adj, vector<bool> &vis, vector<int> &ans) { // using dfs
+    vis.assign(n, false);
+    ans.clear();
+    for (int i = 0; i < n; ++i) {
+        if (!vis[i]) {
+            dfs(i, adj, vis, ans);
+        }
+    }
+    reverse(ans.begin(), ans.end());
+    return ans ;
 }

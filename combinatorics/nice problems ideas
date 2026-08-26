@@ -1,0 +1,20 @@
+good triples
+    1. Digit-sum equality means NO CARRIES
+       digsum(a) + digsum(b) + digsum(c) = digsum(n)
+       iff adding a + b + c produces no carries.
+
+    2. Handle every digit independently
+       If a digit of n is d, we need:
+       x + y + z = d, where x,y,z >= 0
+
+    3. Apply Stars and Bars
+       Number of ways = C(d + 2, 2)
+
+    4. Digits are independent, so MULTIPLY
+       If n has digits d1, d2, ..., dk:
+
+       answer = product C(di + 2, 2)
+
+    5. Since every digit d <= 9:
+       C(d + 2, 2) = (d + 1)(d + 2) / 2
+

@@ -17,3 +17,29 @@ For distributing identical objects:
 Condition                                           Formula
 n children, m identical objects, child can get 0+   C(n + m - 1, m)
 Every child gets at least 1                         C(m - 1, n - 1)
+
+
+DIGITSUM + NO CARRY RULE
+
+    ADDITION:
+    digitsum(a) + digitsum(b) = digitsum(a + b)
+        ⇔
+    There are NO carries when adding a and b.
+
+    For multiple numbers:
+    digitsum(a) + digitsum(b) + digitsum(c)
+        = digitsum(a + b + c)
+        ⇔
+    No carries during the addition.
+
+
+    MULTIPLICATION:
+    digitsum(k * n) = k * digitsum(n)
+        ⇔
+    Multiplying n by k causes NO carries.
+
+    For every digit d of n:
+        k * d <= 9
+
+    So:
+        d <= floor(9 / k)

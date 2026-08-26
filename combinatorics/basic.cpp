@@ -13,7 +13,7 @@ int N = 5000002 , loog = 30;
 using namespace std;
 #define int long long
 
-int fastpow(int a,int b) {
+int fastPow(int a,int b) {
     int res =1 ;
     while (b) {
         if (b&1)res*=a;
@@ -60,7 +60,23 @@ int nCr(int n, int r) {
     return 1LL * nPr(n, r) * modinverse(fact[r]) % mod;
 }
 
+int nCr(int n , int r ) {// manual way
+    int ans =1 ;
 
+    for (int i =1 ; i<= r ;i++)
+        ans = ans*(n-i +1) /i ;
+
+    return ans ;
+}
+
+int nPr(int n, int r) {// manual way
+
+    int ans =1 ;
+    for (int i = 0 ;i < r ;i++)
+        ans*=(n-i) ;
+
+    return ans ;
+}
 
 
 
