@@ -79,7 +79,39 @@ int nPr(int n, int r) {// manual way
 }
 
 
+// Derangement: number of permutations where no element stays in its original position.
+// D[n] = (n - 1) * (D[n - 1] + D[n - 2])
+// D[0] = 1, D[1] = 0
+// Time: O(n), Memory: O(n)
+vector<int> derangements(int n) { // using dp
+    vector<int> d(n +1 );
 
+    d[0] = 1 ;
+    if (n >= 1)d[1] = 0 ;
+
+    for (int i = 2;  i <= n ;i++)
+        d[i] = (i-1) * ((d[i-1] + d[i-2]) %mod) %mod ;
+    return d ;
+}
+
+int derangement(int n) { // using the math rule: D[n] = n! * Σ((-1)^k / k!) for k = 0..n.
+    int fact = 1;
+    int sum = 0 ;
+
+    for (int k = 0 ; k <= n ;k++) {
+        if (k > 0)
+            fact = fact * k %mod; // fact = k!
+
+        int term = modinverse(fact) ; // 1/k!
+
+        if (k&1)
+            sum = (sum - term +mod) %mod; // subtract odd terms
+        else
+            sum= (sum + term)%mod;// add even terms
+    }
+
+    return fact * sum %mod; // multiply sum by n!
+}
 
 
 
