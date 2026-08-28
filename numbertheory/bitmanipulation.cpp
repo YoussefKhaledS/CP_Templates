@@ -43,3 +43,15 @@ int count1withsuffx(int x, int b, int pattern, int k) { // # of numbers n (0<=n<
     int len = 1ll << (b+1) ;
     return (cnt/len) * (1ll << b) + max(0ll, cnt% len - (1ll <<b)) ;
 }
+
+int rangeAND(int start, int end) {
+    int shift = 0 ;
+
+    while (start < end) {
+        start >>=1;
+        end >>=1;
+        shift++;
+    }
+
+    return start << shift;
+}
