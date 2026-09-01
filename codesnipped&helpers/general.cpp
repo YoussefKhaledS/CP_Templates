@@ -30,6 +30,8 @@ void func3() {// convert string transform string
 int sumOfSequenceStartingFromKtoN(int k, int n) {// sum of sequence starting from k to n 
     return n * (2 * k + n - 1) / 2;
 }
+
+priority_queue<int> pq; //max heap allow duplictes
 // to delete element from vector by its value v.erase(remove(v.begin(), v.end(), value), v.end());
 
 // to sort vector by second element

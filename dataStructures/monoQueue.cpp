@@ -12,7 +12,7 @@ const ll mod = 1e9 + 7 , infi = 1e17;
 int N = 5000002 , loog = 40;
 using namespace std;
 #define int long long
-
+// another idea for monotonic idea for median finder in a stream https://leetcode.com/problems/find-median-from-data-stream/description/
 
 struct Node {
     int mx = -infi, mn = infi, val ;

@@ -1,6 +1,9 @@
 #include <bits/stdc++.h>
 
 using namespace std; 
+// Input vector: 0-indexed
+// BIT operations: 1-indexed
+
 
 struct BIT {
     int n ;
@@ -11,6 +14,13 @@ struct BIT {
         while(n < _n)n<<=1;
         b.assign(n+1 ,0) ;
     }
+
+    BIT(vector<int> &a): BIT(a.size()) {
+        for (int i = 0 ; i < a.size() ;i++) {
+            add(i+1, a[i]);
+        }
+    }
+
     int merge(int a, int b){
         return a + b;
     }
@@ -43,7 +53,7 @@ struct BIT {
     }
 
     void set(int idx, int v){
-        int old = get_value(idx) ;
+        int old = get_idx(idx) ;
         add(idx, -old + v) ;
     }
 
