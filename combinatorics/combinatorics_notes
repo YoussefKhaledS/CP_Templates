@@ -19,6 +19,37 @@ n children, m identical objects, child can get 0+   C(n + m - 1, m)
 Every child gets at least 1                         C(m - 1, n - 1)
 
 
+Permutation Rules:
+n distinct elements -> n!
+
+m elements must follow ONE specific relative order (not necessarily adjacent):
+-> n! / m!
+
+m elements can have k allowed relative orders:
+-> k * n! / m!
+
+m elements must stay TOGETHER in one specific order:
+-> (n - m + 1)!
+
+m elements must stay TOGETHER with k allowed internal orders:
+-> k * (n - m + 1)!
+
+Key:
+Relative order -> divide by m!
+Together -> treat as ONE block
+
+to get how many times did any element appeared in nCr you do (n-1)C(r-1)
+
+sum of all non-empty combinations sum(nCr,  r=1...n) = 2^n -1
+
+
+// Non-decreasing arrays of length n, values 1..n:
+// C(2n - 1, n)  (stars and bars: choose n elements with repetition)
+//
+// Non-increasing arrays have the same count:
+// C(2n - 1, n)
+
+
 DIGITSUM + NO CARRY RULE
 
     ADDITION:

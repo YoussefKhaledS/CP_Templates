@@ -10,9 +10,17 @@ typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_
 // order_of_key(x) : number of element less than x
 
 
+// (allows duplicates)
+typedef tree<int , null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update> Ordered_Set; // find_by_order : element at index i
+// order_of_key  : how many elements < A
+// greater<int>
+// less_equal<int>, greater_equal<int> : multiset
+
 // ordered multiset (allows duplicates)
 typedef tree<pair<int,int>, null_type, less<pair<int,int>>, rb_tree_tag, tree_order_statistics_node_update> orderedmultiset;
 // use pair {value, unique_id} to allow duplicates
+
+
 
 
 int main(){
