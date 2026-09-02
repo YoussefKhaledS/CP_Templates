@@ -15,6 +15,7 @@ using namespace __gnu_pbds;
 // #define int uint64_t
 // #define u128 __uint128_t
 // todo convert dfs->bfs easly
+// todo equations of the all summation ex:i*(i+1)/2
 
 vector<bool> vis;
 
