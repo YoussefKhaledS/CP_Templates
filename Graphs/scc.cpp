@@ -25,6 +25,11 @@ using namespace __gnu_pbds;
         Each DFS gives us one complete SCC.
 
 // Kosaraju's second DFS discovers SCCs directly in topological order, so no Kahn's algorithm is needed.
+the algorithm can handel self loops and mult edges between same nodes
+
+indicators
+    non conidtional directed graph that contain loops
+    if you want to compress cycles with some info about it to get a DAG
 */
 
 vector<bool> vis;
@@ -41,7 +46,7 @@ void dfs(int node, vector<vector<int>> &adj, vector<int> &res) {// this for step
 }
 
 vector<vector<int>> components , sccAdj;
-vector<int> sccRoots, sccRoots_components;
+vector<int> sccRoots, sccRoots_components, components_sccRoots ;
 void scc(vector<vector<int>> &adj) {
 
     int n = adj.size();
@@ -68,6 +73,7 @@ void scc(vector<vector<int>> &adj) {
 
     sccRoots.assign(n, 0) ;// to store the scc root for each node
     sccRoots_components.assign(n, -1) ;// to store the component id for each scc root
+    components_sccRoots.assign(n,-1) ;
 
     // step 3: last dfs to create the scc
     for (int v : order) {
@@ -80,6 +86,7 @@ void scc(vector<vector<int>> &adj) {
 
         int root = component.front() ;
         sccRoots_components[root] = components.size() -1;
+        components_sccRoots[components.size() -1 ] = root ;
         for (int u : component)
             sccRoots[u] = root ;
     }
