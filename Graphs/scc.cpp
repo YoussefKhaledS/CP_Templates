@@ -39,7 +39,7 @@ void dfs(int node, vector<vector<int>> &adj, vector<int> &res) {// this for step
 }
 
 vector<vector<int>> components , sccAdj;
-vector<int> sccRoots;
+vector<int> sccRoots, sccRoots_components;
 void scc(vector<vector<int>> &adj) {
 
     int n = adj.size();
@@ -54,7 +54,7 @@ void scc(vector<vector<int>> &adj) {
     }
 
     // step2: reverse the graph
-    vector<vector<int>> revAdj ;
+    vector<vector<int>> revAdj(n) ;
     for (int node = 0 ; node < n; node++) {
         for (int child : adj[node]) {
             revAdj[child].push_back(node);
@@ -65,6 +65,7 @@ void scc(vector<vector<int>> &adj) {
     reverse(order.begin(),order.end());
 
     sccRoots.assign(n, 0) ;// to store the scc root for each node
+    sccRoots_components.assign(n, -1) ;// to store the component id for each scc root
 
     // step 3: last dfs to create the scc
     for (int v : order) {
@@ -76,6 +77,7 @@ void scc(vector<vector<int>> &adj) {
         components.push_back(component);
 
         int root = component.front() ;
+        sccRoots_components[root] = components.size() -1;
         for (int u : component)
             sccRoots[u] = root ;
     }
