@@ -23,6 +23,8 @@ using namespace __gnu_pbds;
     Step 2: Reverse the graph
     Step 3: Process nodes in reverse finishing order
         Each DFS gives us one complete SCC.
+
+// Kosaraju's second DFS discovers SCCs directly in topological order, so no Kahn's algorithm is needed.
 */
 
 vector<bool> vis;
