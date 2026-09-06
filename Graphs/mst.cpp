@@ -22,8 +22,8 @@ Memory: O(N + M)
  works on Weighted undirected graphs
 
 The graph should be connected
-    If the graph is connected, Prim produces one MST containing all N vertices.
-    If the graph is disconnected, Prim starting from one node only visits its connected component. (you can make MS Forest)
+    If the graph is connected,  produces one MST containing all N vertices.
+    If the graph is disconnected,  starting from one node only visits its connected component. (you can make MS Forest)
 
 the result is connected TREE with minimum sum of edges
 
@@ -39,6 +39,11 @@ Kruskal with Disjoint Set Union steps
 1- sort edges by increasing edge weight
 2- initialize DSU for the graph
 3- for each edge do a union find to merge them if the are diff
+
+to find all edges that can be in the mst
+// Process edges with the same weight together:
+// if their endpoints are not connected using smaller weights, they can be in some MST.
+// Check all edges first, then union the whole weight group.
 
 */
 struct DSU {
@@ -124,3 +129,17 @@ void mst(vector<vector<pair<int,int>>> &adj) {
         if (edgesCnt == n-2)break;
     }
 }
+
+
+
+// if you want two things to sort about
+struct Edge {
+    int u, v, speed, cost;
+
+    bool operator<(Edge const& other) const {
+        if (speed != other.speed)
+            return speed > other.speed; // speed descending
+
+        return cost < other.cost; // cost ascending
+    }
+};

@@ -23,7 +23,7 @@ void fun2() { // create array vector with numbers from 1 to n
     iota(v.begin(), v.end(), 1);
 }
 
-void func3() {// convert string transform string
+void func3() {// convert string to number transform string to number
     int x = stoll("235234324") ;
 
 }
@@ -31,7 +31,8 @@ int sumOfSequenceStartingFromKtoN(int k, int n) {// sum of sequence starting fro
     return n * (2 * k + n - 1) / 2;
 }
 
-priority_queue<int> pq; //max heap allow duplictes
+priority_queue<int> maxheap; //max heap allow duplictes
+priority_queue<int, std::vector<int>, std::greater<int>> minheap;
 // to delete element from vector by its value v.erase(remove(v.begin(), v.end(), value), v.end());
 
 // to sort vector by second element
