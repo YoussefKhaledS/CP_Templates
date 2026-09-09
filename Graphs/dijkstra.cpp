@@ -18,7 +18,7 @@ using minPQ = priority_queue<T, vector<T>, greater<>>;
 
 vector<int> parent ;
 
-vector<int> dijkstra(int src, int n, vector<vector<int>> &adj) {
+vector<int> dijkstra(int src, int n, vector<vector<pair<int,int>>> &adj) {
     vector<int> dist(n+1, infi) ;
     parent.assign(n+1, -1) ;
     minPQ<pair<int,int>> pq;
@@ -30,7 +30,7 @@ vector<int> dijkstra(int src, int n, vector<vector<int>> &adj) {
         auto [cost, u] = pq.top() ;
         pq.pop() ;
 
-        if (dist[u] < cost) continue;
+        if (dist[u] < cost) continue;// this PQ entrie is outdated so ignore it. (you inserted the same node twice)
 
         for (auto [v, w]: adj[u]) {
             if (dist[u] + w >= dist[v])continue;
@@ -57,6 +57,44 @@ vector<int> get_path(int src, int dest) {
 }
 
 
+// finding kth smallest path from src to all
+template<class T>
+using minPQ = priority_queue<T, vector<T>, greater<>>;
+
+vector<vector<int>> dijkstra(int src, int n, vector<vector<pair<int,int>>> &adj, int k) {
+
+    vector<vector<int>> dist(n+1, vector<int>(k+2, infi)) ;
+
+    minPQ<pair<int,int>> pq;
+
+    dist[src][1] = 0 ;
+    pq.emplace(0, src) ;
+
+    while (!pq.empty()) {
+        auto [cost,node] = pq.top() ;
+        pq.pop() ;
+
+        if (dist[node][k] < cost) continue;
+
+        for (auto [child, w]: adj[node]) {
+            int newcost = cost + w ;
+
+            int i ;
+            for (i = k+1; i > 1 ;i--) {
+                if (newcost < dist[child][i-1]) {
+                    dist[child][i] = dist[child][i-1] ;
+                }else
+                    break;
+            }
+            if (i < k+1) {
+                dist[child][i] = newcost ;
+                pq.emplace(newcost, child) ;
+            }
+
+        }
+    }
+    return dist ;
+}
 
 
 
