@@ -13,15 +13,28 @@ int N = 5e5 , loog = 30;
 using namespace std;
 #define int long long
 
+
+/*
+cannot work with (-ve edges, negative cycles)
+
+steps
+maintain a 1D dist infi array & start node 0
+maintain priority queue of(node, index, distance)
+insert (s, 0) and loop while PQ ! empty
+itrate over all childs and insert in PQ if can
+
+*/
+
 template<class T>
 using minPQ = priority_queue<T, vector<T>, greater<>>;
+// using maxPQ = priority_queue<T> ;
 
 vector<int> parent ;
 
-vector<int> dijkstra(int src, int n, vector<vector<int>> &adj) {
-    vector<int> dist(n+1, infi) ;
+vector<int> dijkstra(int src, int n, vector<vector<pair<int,int>>> &adj) {
     parent.assign(n+1, -1) ;
     minPQ<pair<int,int>> pq;
+    vector<int> dist(n+1, infi) ;
 
     dist[src] = 0 ;
     pq.emplace(0, src) ;
@@ -61,4 +74,36 @@ vector<int> get_path(int src, int dest) {
 
 
 
+// implementation of a nice problem 2D distance  https://codeforces.com/contest/1915/problem/G
+template<class T>
+using minPQ = priority_queue<T, vector<T>, greater<>>;
+// using maxPQ = priority_queue<T> ;
 
+vector<int> parent ;
+
+vector<vector<int>> dijkstra(int src, int n, vector<vector<pair<int,int>>> &adj, vector<int> &ar) {
+    parent.assign(n+1, -1) ;
+    minPQ<array<int, 3>> pq;
+    vector<vector<int>> dist(n+1, vector<int>(1001, infi)) ;
+    vector<int> factors(n+1, infi);
+
+    dist[src][ar[src]] = 0 ;
+    pq.emplace( array<int,3>{0, ar[src] , src}) ;
+
+    while (!pq.empty()) {
+        auto [cost, factor,u] = pq.top() ;
+        pq.pop() ;
+
+        if (dist[u][factor] < cost) continue;
+
+        for (auto [v, w]: adj[u]) {
+            int newfactor = min(factor , ar[v]) ;
+            if (dist[u][factor] + w*factor >= dist[v][newfactor] )continue;
+
+            dist[v][newfactor] = dist[u][factor] + w*factor;
+            parent[v] = u;
+            pq.emplace(array<int,3>{dist[v][newfactor] , newfactor, v}) ;
+        }
+    }
+    return dist ;
+}
