@@ -13,6 +13,7 @@ int N = 5000002 , loog = 40;
 using namespace std;
 using namespace __gnu_pbds;
 #define int long long
+// todo there is algorithm for dsu with rollback
 
 struct DSU {
     vector<int> parent, sz;
