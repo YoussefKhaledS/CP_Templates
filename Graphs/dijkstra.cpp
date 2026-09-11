@@ -25,6 +25,7 @@ itrate over all childs and insert in PQ if can
 
 */
 
+// basic dijkstra
 template<class T>
 using minPQ = priority_queue<T, vector<T>, greater<>>;
 // using maxPQ = priority_queue<T> ;
@@ -110,6 +111,51 @@ vector<vector<int>> dijkstra(int src, int n, vector<vector<pair<int,int>>> &adj,
 }
 
 
+// findint number of shortest path, min,max edjes in shortest path to node
+template<class T>
+using minPQ = priority_queue<T, vector<T>, greater<>>;
+
+vector<vector<int>> dijkstra(int src, int n, vector<vector<pair<int,int>>> &adj) {
+    vector<int> dist(n+1, infi) ;
+    vector<int> cntrouts(n+1, 0) ;
+    vector<int> minflights(n+1, infi) ;
+    vector<int> maxflights(n+1, 0) ;
+
+    minPQ<pair<int,int>> pq;
+
+    dist[src] = 0 ;
+    cntrouts[src] = 1;
+    minflights[src] = 0;
+    maxflights[src] = 0;
+    pq.emplace(0, src) ;
+
+    while (!pq.empty()) {
+        auto [cost, u] = pq.top() ;
+        pq.pop() ;
+
+        if (dist[u] < cost) continue;
+
+        for (auto [v, w]: adj[u]) {
+            int newcost = dist[u] + w ;
+
+            if (newcost > dist[v])continue;
+
+            if (newcost == dist[v]) {
+                cntrouts[v]= (cntrouts[v]+ cntrouts[u])%mod ;
+                minflights[v] = min(minflights[v], minflights[u]+1) ;
+                maxflights[v] = max(maxflights[v], maxflights[u]+1) ;
+            }
+            else{
+                dist[v] = newcost;
+                cntrouts[v] = cntrouts[u] ;
+                minflights[v] = minflights[u] + 1;
+                maxflights[v] = maxflights[u] + 1;
+                pq.emplace(newcost, v) ;
+            }
+        }
+    }
+    return {dist, cntrouts, minflights, maxflights} ;
+}
 
 
 // implementation of a nice problem 2D distance  https://codeforces.com/contest/1915/problem/G
