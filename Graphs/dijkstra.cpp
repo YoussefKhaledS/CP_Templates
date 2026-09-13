@@ -23,6 +23,10 @@ maintain priority queue of(node, index, distance)
 insert (s, 0) and loop while PQ ! empty
 itrate over all childs and insert in PQ if can
 
+
+// Edge can be in a shortest path if: distS[a] + c + distT[b] == distS[t]
+// Edge must be in every shortest path if: waysS[a] * waysT[b] == waysS[t] this may be wrong because the long long will overflow and we cannot use the mode 
+
 */
 
 // basic dijkstra
