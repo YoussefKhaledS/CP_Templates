@@ -14,10 +14,10 @@ using namespace __gnu_pbds;
 #define int long long
 
 
-set<int> getcycle(vector<vector<int>> &adj) {
+vector<vector<int>> getcycle(vector<vector<int>> &adj) {
     int n = adj.size() ;
     vector<int> deg(n);
-    vector<bool> del(n) ;
+    vector<bool> del(n), vis(n);
     queue<int> q;
 
     for (int i =1 ; i< n ;i++) {
@@ -33,9 +33,31 @@ set<int> getcycle(vector<vector<int>> &adj) {
             if (!del[v] && --deg[v] <= 1)
                 q.push(v), del[v] =1 ;
     }
-    set<int> ans ;
-    for (int i = 1; i<= n ;i++)
-        if (!del[i])ans.insert(i);
 
-    return ans ;
+
+    vector<vector<int>> cycles ;
+
+    for (int i =1 ; i < n ;i++) {
+        if (del[i] || vis[i])continue;
+
+        vector<int> cycle;
+        int prv = -1 , u = i ;
+        do {
+            cycle.push_back(u) ;
+            vis[u] = 1;
+
+            int v = -1 ;
+            for (int x: adj[u])
+                if (!del[x] && x != prv) {
+                    v = x ;
+                    break;
+                }
+            prv = u ;
+            u = v;
+        }while (u != i);
+
+        cycles.push_back(cycle);
+    }
+
+    return cycles;
 }
