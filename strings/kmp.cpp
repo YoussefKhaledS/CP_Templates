@@ -16,24 +16,27 @@ using namespace std;
 using namespace __gnu_pbds;
 #define int long long
 
+// prefix/failure function -> what is the longest proper prefix of S[0..i] that is also a suffix
+// pi[] as a precomputed array that tells you how much of the string you can reuse after a mismatch.
 
 vector<int> failure_function(string s) {
     int n = s.size() ;
-    vector<int> ar(n) ;
+    vector<int> lps(n, 0) ;
 
     for (int i = 1; i< n; i++) {
-        int j = ar[i-1];
+        int j = lps[i-1];// j is the length of the prefix that we think = suffix
 
         while (j > 0 && s[i] !=s[j])
-            j = ar[j-1] ;
+            j = lps[j-1] ;
 
         if (s[i] == s[j])
             j++;
 
-        ar[i] = j ;
+        lps[i] = j ;
     }
-    return ar;
+    return lps;
 }
+
 
 
 
