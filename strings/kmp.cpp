@@ -75,6 +75,7 @@ vector<int> allborderofstring(string s) {// border of string is prefix that is a
     int j = lps[n-1] ;
     while (j > 0) {
         ans.push_back(j);
+        // ans.push_back(n-j) ;// to get period of a string is a prefix that can be used to generate the whole string by repeating the prefix
         j=lps[j-1];
     }
 
