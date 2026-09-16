@@ -27,7 +27,7 @@ void func3() {// convert string to number transform string to number
     int x = stoll("235234324") ;
 
 }
-int sumOfSequenceStartingFromKtoN(int k, int n) {// sum of sequence starting from k to n 
+int sumOfSequenceStartingFromKtoN(int k, int n) {// summation of sequence starting from k to n
     return n * (2 * k + n - 1) / 2;
 }
 

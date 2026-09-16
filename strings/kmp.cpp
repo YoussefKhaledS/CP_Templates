@@ -19,6 +19,11 @@ using namespace __gnu_pbds;
 // prefix/failure function -> what is the longest proper prefix of S[0..i] that is also a suffix
 // pi[] as a precomputed array that tells you how much of the string you can reuse after a mismatch.
 
+// if you stuck in a string problem just try to find a pattern for your problem using those loops
+// for (int i = 0 ; i< s.size() ; i++)cout << i << ' ' ;cout << el;
+// for (auto i : s)cout << i << ' ';cout << el ;
+// for (auto i: ff)cout << i << ' ';
+
 vector<int> failure_function(string s) {
     int n = s.size() ;
     vector<int> lps(n, 0) ; // longest prefix suffix
@@ -83,6 +88,17 @@ vector<int> allborderofstring(string s) {// border of string is prefix that is a
     return ans ;
 }
 
+void findperiodicstring(string s) {
+
+    vector<int> lps = failure_function(s) ;
+
+    int n = s.size() ;
+    
+    int period = n - lps[n-1] ;
+
+    if (n% period == 0)cout << period ;
+    else cout<< n ;
+}
 
 
 
