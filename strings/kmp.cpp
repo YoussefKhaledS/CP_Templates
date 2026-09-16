@@ -21,7 +21,7 @@ using namespace __gnu_pbds;
 
 vector<int> failure_function(string s) {
     int n = s.size() ;
-    vector<int> lps(n, 0) ;
+    vector<int> lps(n, 0) ; // longest prefix suffix
 
     for (int i = 1; i< n; i++) {
         int j = lps[i-1];// j is the length of the prefix that we think = suffix
@@ -37,6 +37,50 @@ vector<int> failure_function(string s) {
     return lps;
 }
 
+// returns all 0-based starting positions of pattern in text
+vector<int> search_pattern(string &text, string & pattern) {
+    int n = text.size();
+    int m = pattern.size() ;
+
+    vector<int> lps = failure_function(pattern);
+    vector<int> positions;
+
+    int j = 0 ;
+
+    for (int i = 0 ; i< n; i++) {
+
+        // mismatch -> fall back using prefix/failure funciton
+        while (j >0 && text[i] != pattern[j])
+            j = lps[j-1] ;
+
+        // match current character
+        if (text[i] == pattern[j])
+            j++;
+
+        // complete pattern found
+        if (j == m) {
+            positions.push_back(i-m + 1) ;
+
+            //continue searching for overlapping matches
+            j = lps[j - 1] ;
+        }
+        return positions ;
+    }
+}
+
+vector<int> allborderofstring(string s) {// border of string is prefix that is also a suffix
+    vector<int> lps = failure_function(s);
+    vector<int> ans ;
+
+    int j = lps[n-1] ;
+    while (j > 0) {
+        ans.push_back(j);
+        j=lps[j-1];
+    }
+
+    sort(ans.begin(),ans.end());
+    return ans ;
+}
 
 
 
