@@ -175,3 +175,77 @@ struct Trie {
     }
 
 };
+
+// binary trie
+// notes : to get max xor for subarray just make prefix xor array and use the template itrative
+struct Trie {
+    int LOG = 40 ;
+    struct Node {
+        int nxt[2]; // store the index of the child node from using char i
+        int pref;// number of inserted strings having this prefix
+
+        Node() {
+            memset(nxt, -1, sizeof nxt) ;
+            pref= 0 ;
+        }
+    };
+
+    vector<Node> tree;
+
+    Trie() {
+        tree.push_back(Node());// root node
+    }
+
+    void insert(int n) {
+        int cur = 0 ; //start at the root node
+
+        for (int i = LOG; i>= 0 ;i--){
+            int bit = (1ll<<i) & n ;
+            bool on = bit ;
+
+            if (tree[cur].nxt[on] == -1) {
+                tree[cur].nxt[on] = tree.size() ;// the index of the node we will add
+                tree.push_back(Node()); // the newly added node
+            }
+
+            cur = tree[cur].nxt[on];
+            tree[cur].pref++;
+        }
+    }
+    // use prefix = 1 to ask for prefix exist and 0 to ask for a word
+    int maxxor(int x) {// get max xor beetween intered x and one of the numbers insdie the DS
+        // for this funciton to work with empty you need to insert 0 before anything
+        int cur = 0 ;
+        int ans = 0 ;
+
+        for (int i = LOG ;i >= 0 ;i--) {
+            int bit = (1ll<<i) & x ;
+            bool on = bit ;
+
+            int nxtcurx = tree[cur].nxt[!on] ;
+            int nxtcury = tree[cur].nxt[on] ;
+
+            if (nxtcurx != -1 && tree[nxtcurx].pref != 0) {// !bit does exist in the trie
+                ans|=(1ll << i);
+                cur = nxtcurx;
+            }else {
+                cur = nxtcury ;
+            }
+        }
+        return ans;
+    }
+
+    void remove(int x) {
+        int cur = 0 ;
+
+        for (int i = LOG; i>= 0 ;i--){
+            int bit = (1ll<<i) & x ;
+            bool on = bit ;
+
+            cur = tree[cur].nxt[on];
+
+            tree[cur].pref--;
+        }
+    }
+};
+

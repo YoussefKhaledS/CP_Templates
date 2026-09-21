@@ -16,291 +16,98 @@ using namespace __gnu_pbds;
 // #define u128 __uint128_t
 // todo convert dfs->bfs easly
 // todo equations of the all summation ex:i*(i+1)/2
-pair<int,int> ky(int a, int b) {
-    return {max(a,b), min(a,b)};
-}
-struct DSU {
-    vector<int> parent, sz;
 
-    DSU(int n ) {
-        parent.resize(n+1);
-        sz.assign(n+1, 1) ;
 
-        for (int i = 1; i <= n; i++)
-            parent[i] =i;
+
+struct Trie {
+    int LOG = 40 ;
+    int k ;
+    struct Node {
+        int nxt[2]; // store the index of the child node from using char i
+        int pref;// number of inserted strings having this prefix
+
+        Node() {
+            memset(nxt, -1, sizeof nxt) ;
+            pref= 0 ;
+        }
+    };
+
+    vector<Node> tree;
+
+    Trie(int _k) {
+        tree.push_back(Node());// root node
+        k = _k ;
     }
 
-    int find(int x) {
-        if (parent[x] == x)return x;
-        return parent[x] = find(parent[x] );
+    void insert(int n) {
+        int cur = 0 ; //start at the root node
+
+        for (int i = LOG; i>= 0 ;i--){
+            int bit = (1ll<<i) & n ;
+            bool on = bit ;
+
+            if (tree[cur].nxt[on] == -1) {
+                tree[cur].nxt[on] = tree.size() ;// the index of the node we will add
+                tree.push_back(Node()); // the newly added node
+            }
+
+            cur = tree[cur].nxt[on];
+            tree[cur].pref++;
+        }
     }
 
-    void unite(int a, int b) {
-        a = find(a) ;
-        b = find(b) ;
+    int maxxor(int x) {
+        int cur = 0 ;
+        int ans = 0 ;
 
-        if (a== b)return ;
+        for (int i = LOG ;i >= 0 ;i--) {
+            int bit = (1ll<<i) & x ;
+            bool on = bit ;
 
-        if (sz[a] < sz[b])swap(a,b);
+            if (ans >= k) {
+                return tree[cur].pref;
+            }
+            int nxtcurx = tree[cur].nxt[!on] ;
+            int nxtcury = tree[cur].nxt[on] ;
 
-        parent[b]= a;
 
-        sz[a]+=sz[b] ;
-        return ;
-    }
-
-    bool same(int a, int b) {
-        return find(a) == find(b);
-    }
-
-    int size(int x) {
-        return sz[find(x)] ;
+            if (nxtcurx != -1 && tree[nxtcurx].pref != 0) {
+                ans|=(1ll << i);
+                cur = nxtcurx;
+            }else {
+                cur = nxtcury ;
+            }
+        }
+        if (ans >= k) {
+            return tree[cur].pref;
+        }else return 0;
     }
 };
 
-struct Edge {
-    int u,v , weight, j;
-    bool operator<(Edge const& other) {
-        return weight < other.weight; // to sort asc
-    }
-};
-vector<vector<pair<int,int>>> mstAdj ;
-int mstCost  ;
-vector<bool> vis(N, 0);
-vector<Edge> edges;
-
-void mst(int n) {
-
-    // step 1 createing the sorted edges array
-
-    sort(edges.begin(),edges.end());
-
-    //step2 init the dsu
-    DSU dsu(n) ;
-
-    mstAdj.assign(n, {});
-    int edgesCnt = 0;
-    mstCost= 0 ;
-
-    //step 3 kruskal
-    for (auto [u, v, w, j]: edges) {
-        if (dsu.same(u,v))continue;
-
-        dsu.unite(u,v);
-        vis[j] = 1 ;
-
-        mstAdj[u].push_back({v,w});
-        mstAdj[v].push_back({u,w});
-
-        mstCost+=w;
-        edgesCnt++;
-
-        if (edgesCnt == n-2)break;
-    }
-}
-
-struct LCA
-{
-    int **memo, log;
-    vector<vector<pair<int,int>>> adjlist ;
-    vector<int> lev;
-
-    LCA(int n, vector<vector<pair<int,int>>> &_adjlist, int root)
-    {
-        adjlist = _adjlist;
-        memo = new int *[n + 1];
-        log = (int)ceil(log2(n));
-        lev.assign(n+1 , 0) ;
-        for (int i = 0; i <= n; i++)
-        {
-            memo[i] = new int[log+1];
-        }
-
-        build(root, root);
-    }
-
-    void build(int u, int p)
-    {
-        memo[u][0] = p;
-
-        for (int i = 1; i <= log; i++)
-            memo[u][i] = memo[memo[u][i - 1]][i - 1];
-
-        for (auto [v,c] : adjlist[u])
-        {
-            if (v != p)
-            {
-                lev[v] = lev[u] + 1;
-                build(v, u);
-            }
-        }
-    }
-
-    int get(int u, int v)
-    {
-        // u is the farthest from the root
-        if (lev[u] < lev[v])
-            swap(u, v);
-
-        // making u at the same level of v
-        for (int i = log; i >= 0; i--)
-        {
-            if ((lev[u] - (1 << i)) >= lev[v])
-            {
-                u = memo[u][i];
-            }
-        }
-        // here v was originally the ancestor of u
-        if (u == v)
-            return v;
-
-        // finding the node closest to the root which is not the common ancestor
-        for (int i = log; i >= 0; i--)
-        {
-            if (memo[u][i] != memo[v][i])
-            {
-                u = memo[u][i];
-                v = memo[v][i];
-            }
-        }
-        return memo[u][0];
-    }
-
-    int kth(int u , int k){
-        assert(k >= 0) ;
-        for(int i = 0 ; i<= log;i++){
-            if(k& (1<<i)){
-                u = memo[u][i] ;
-            }
-        }
-        return u ;
-    }
-
-    int dist(int u, int v){
-        int l = get(u, v);
-        return lev[u]+ lev[v] - 2 * lev[l] ;
-    }
-
-    int go(int u, int v, int k){
-        int l = get(u,v) ;
-
-        int dist_u_l = lev[u] - lev[l] ;
-
-        // still going up from u to lca
-        if(k <= dist_u_l){
-            return kth(u,k) ;
-        }
-
-        // go down from lca to v
-        k -= dist_u_l;
-
-        int dist_v_l = lev[v] - lev[l] ;
-        return kth(v, dist_v_l - k) ;
-    }
-
-};
-map<pair<int,int>, int> mp ;
-int timer =0;
-vector<int> tin(N), tout(N), flat_path(2*N) ;
-// the flat array should contain index 0->2*n-1 only
-void dfs(int node, int parent) {
-    tin[node] = timer ;
-
-    flat_path[timer++] = mp[ky(node, parent)] ;
-
-    for (auto [child,w] : mstAdj[node]) {
-        if (child == parent)continue;
-
-        dfs(child, node);
-    }
-
-    tout[node] = timer ;
-    flat_path[timer++] = -mp[ky(node, parent)]; // to remvove it from the path
-}
-
-struct ST{
-    vector<vector<int>> memo ;
-    vector<int> logs;
-
-    int merge(int &lf, int &ri)
-    {
-        return max(lf, ri);
-    }
-
-    ST(vector<int> &ar){
-        int n = ar.size();
-        logs.assign(n+1 , 0) ;
-
-        //building logs for fast access
-        for(int i = 2; i<= n ;i++)logs[i] = logs[i/2] +1 ;
-
-        memo.assign(logs[n] + 1 , vector<int>(n)) ;
-        memo[0] = ar;
-
-        for(int i = 1; i <= logs[n];i++){
-            int l = 1 << i ;
-            for(int j = 0 ; j+l <= n ; j++){
-                memo[i][j] = merge(memo[i-1][j], memo[i-1][j + (l >> 1)]) ;
-            }
-        }
-
-    }
-
-    int get(int l, int r)// get(l, r) expects an inclusive 0-indexed range
-    {
-        int len = r - l + 1;
-        int level = logs[len];
-        return merge(memo[level][l], memo[level][r - (1 << level) + 1]);
-    }
-};
-
-bool isInSubtree(int node, int child ) {
-    return tin[node] <= tin[child] && tin[child] < tout[node] ;
-}
 
 void solve() {
-    int n , m ;cin >> n >> m ;
 
+    int n , k ;cin >> n >> k ;
 
-    vector<vector<pair<int,int>>> adj(n+1);
-    for (int i = 1 ; i<= m ;i++) {
-        int a ,b , c ;cin >> a >> b >> c ;
-
-        mp[ky(a,b)] = c;
-        edges.push_back({a,b,c,i}) ;
+    vector<int> ar(n+1) , prfix(n+1, 0 );
+    for (int i = 1 ; i <= n; i++) {
+        cin >> ar[i] ;
+        prfix[i] = ar[i] ^ prfix[i-1] ;
     }
 
-    mst(n+1) ;
-    dfs(1,-1) ;
-    ST st(flat_path) ;
-    LCA lca(n, mstAdj, 1);
+    Trie trie(k);
+    int ans= 0 ;
+    trie.insert(0);
 
+    for (int i = 1 ; i<= n;i++){
+        int x = prfix[i] ;
 
-    vector<int> ans(m+1) ;
-    for (auto edj : edges) {
-        auto [a,b,c,j] = edj ;
-
-        if (vis[j]) {
-            ans[j]=  mstCost ;
-            continue;
-        }
-
-        if (isInSubtree(b,a)) {
-            swap(a,b) ;
-        }
-        int lc = lca.get(a,b) ;
-
-        ans[j]= mstCost - st.get(tin[lc], tin[a]) - st.get(tin[lc], tin[b]) + flat_path[tin[lc]] + c ;
+        cout << trie.maxxor(x) <<el ;
+        ans+= trie.maxxor(x);
+        trie.insert(x);
     }
-    for (int timer = tin[3] ; timer <= tin[4] ; timer++)cout << flat_path[timer] << el; 
-    // cout << flat_path[tin[4]] ;
+    cout << ans ;
 
-
-
-
-    // for (int i=1 ; i<= m ;i++) {
-    //     cout << ans[i] <<el ;
-    // }
 
 }
 
@@ -329,6 +136,5 @@ signed main()
         // cout << "Case "<< i << ": " ;
         solve();
         // solve2() ;
-        cout << el;
     };
 }
