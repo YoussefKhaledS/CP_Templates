@@ -249,3 +249,73 @@ struct Trie {
     }
 };
 
+
+// Bitwise trie: pref = subtree frequency; count y with (x ^ y) <= k.
+struct Trie {
+    int LOG = 40 , k;
+    struct Node {
+        int nxt[2]; // store the index of the child node from using char i
+        ll pref;// number of inserted strings having this prefix
+        int idx ;
+
+        Node() {
+            memset(nxt, -1, sizeof nxt) ;
+            pref= 0 ;
+            idx = -1 ;
+        }
+    };
+
+    vector<Node> tree;
+
+    Trie(int _k) {
+        tree.push_back(Node());// root node
+        k = _k ;
+    }
+
+    void insert(int n, int idx) {
+        int cur = 0 ; //start at the root node
+
+        for (int i = LOG; i>= 0 ;i--){
+            int bit = (1ll<<i) & n ;
+            bool on = bit ;
+
+            if (tree[cur].nxt[on] == -1) {
+                tree[cur].nxt[on] = tree.size() ;// the index of the node we will add
+                tree.push_back(Node()); // the newly added node
+            }
+
+            cur = tree[cur].nxt[on];
+            tree[cur].pref++;
+        }
+        tree[cur].idx = max(tree[cur].idx, idx);
+    }
+
+    ll cntranges(int x) {
+        int cur = 0 ;
+        ll ans = 0 ;
+
+        for (int i = LOG ;i >= 0 ;i--) {
+            int bit = (1ll<<i) & x;
+            int bitK = (1ll<<i) & k ;
+            bool on = bit ;
+
+            int nxtNode = tree[cur].nxt[on] ;
+            int nxtNotNode = tree[cur].nxt[!on] ;
+
+            bool res1 =( nxtNotNode != -1 && tree[nxtNotNode].pref != 0)  ;
+            bool res0 = (nxtNode != -1 && tree[nxtNode].pref != 0) ;
+
+            if (bitK) {
+                if (res1)cur = nxtNotNode ;
+                else return ans ;
+            }else {// bit k is 0
+                if (res1) {
+                    ans+= tree[nxtNotNode].pref;
+                }
+                if (res0)cur = nxtNode;
+                else return ans;
+            }
+        }
+        return ans + tree[cur].pref ;
+    }
+};
