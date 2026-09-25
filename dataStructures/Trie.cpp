@@ -19,6 +19,7 @@ using namespace __gnu_pbds;
 // Node doesn't store its char; nxt[i] represents the edge labeled 'a' + i
 // Example: nxt[2] = 5 means: current node --'c'--> node 5
 // For arbitrary characters or a huge alphabet, a map/hashmap can be used instead.
+// Use a Trie to quickly find dictionary words starting at each position of a string.
 struct Trie {
     struct Node {
         int nxt[26]; // store the index of the child node from using char i
@@ -91,6 +92,23 @@ struct Trie {
     void clear() {
         tree.clear();
         tree.push_back(Node());
+    }
+    
+    vector<vector<bool>> count ;
+    void findWordsStartingAt(string &s, int i) {
+        int cur = 0 ;
+
+        for (int j = i ; j < s.size(); j++) {
+            char c = s[j] ;
+            int x = c- 'a' ;
+
+            int nxt = tree[cur].nxt[x] ;
+            if (nxt == -1)return ;
+
+            if (tree[nxt].end)count[i][j] = true ;
+
+            cur = nxt ;
+        }
     }
 };
 
